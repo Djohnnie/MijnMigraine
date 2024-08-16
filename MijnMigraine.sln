@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35209.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MijnMigraine.Web", "MijnMigraine.Web\MijnMigraine.Web\MijnMigraine.Web.csproj", "{B4A654BE-03F1-4AB6-870D-F5E4D1738329}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MijnMigraine.Web.Client", "MijnMigraine.Web\MijnMigraine.Web.Client\MijnMigraine.Web.Client.csproj", "{899031B3-1C91-4374-ADA1-A5AAA106D400}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4A654BE-03F1-4AB6-870D-F5E4D1738329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A654BE-03F1-4AB6-870D-F5E4D1738329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4A654BE-03F1-4AB6-870D-F5E4D1738329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4A654BE-03F1-4AB6-870D-F5E4D1738329}.Release|Any CPU.Build.0 = Release|Any CPU
+		{899031B3-1C91-4374-ADA1-A5AAA106D400}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{899031B3-1C91-4374-ADA1-A5AAA106D400}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{899031B3-1C91-4374-ADA1-A5AAA106D400}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{899031B3-1C91-4374-ADA1-A5AAA106D400}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A22573BA-081A-431E-AA84-D120B82CEBBB}
+	EndGlobalSection
+EndGlobal
