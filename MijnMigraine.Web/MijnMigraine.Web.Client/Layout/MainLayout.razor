@@ -11,7 +11,9 @@
         <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" Edge="Edge.End" OnClick="@DarkModeToggle" />
     </MudAppBar>
     <MudMainContent Class="mt-16 pa-4">
-        @Body
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            @Body
+        </MudContainer>
     </MudMainContent>
 </MudLayout>
 
