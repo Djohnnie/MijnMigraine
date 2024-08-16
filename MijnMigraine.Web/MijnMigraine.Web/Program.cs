@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using MijnMigraine.Web.Client.Helpers;
 using MijnMigraine.Web.Client.Pages;
 using MijnMigraine.Web.Components;
 using MijnMigraine.Web.Data;
@@ -13,6 +15,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddDbContext<MijnMigraineDbContext>();
+builder.Services.AddScoped<ILogicHelper, MijnMigraine.Web.Helpers.LogicHelper>();
 
 var app = builder.Build();
 
@@ -36,5 +39,11 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(MijnMigraine.Web.Client._Imports).Assembly);
+
+app.MapGet("/api/entries", async (ILogicHelper helper) =>
+{
+    return await helper.GetEntriesAsync();
+})
+.WithName("GetAllMigraineEntries");
 
 app.Run();

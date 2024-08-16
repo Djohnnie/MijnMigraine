@@ -6,6 +6,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Compile Include="..\MijnMigraine.Web.Client\Pages\Home.razor.cs" Link="Home.razor.cs" />
+	</ItemGroup>
+
 
 	<ItemGroup>
 		<ProjectReference Include="..\MijnMigraine.Web.Client\MijnMigraine.Web.Client.csproj" />
