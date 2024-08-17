@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MijnMigraine.Web.Client.Contracts;
 using MijnMigraine.Web.Client.Helpers;
-using System.Net;
-using System.Net.Http.Json;
 
 namespace MijnMigraine.Web.Client.Pages;
 
@@ -12,6 +10,12 @@ public partial class Home : ComponentBase
 
     protected List<MigraineEntryDto> Entries { get; private set; }
 
+    protected DateTime? DateOfOccurrence { get; set; }
+    protected TimeSpan? TimeOfOccurrence { get; set; }
+    protected int Severity { get; set; }
+    protected decimal? Duration { get; set; }
+    protected string? AdditionalInfo { get; set; }
+
     public Home(ILogicHelper logicHelper)
     {
         _logicHelper = logicHelper;
@@ -20,5 +24,15 @@ public partial class Home : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         Entries = await _logicHelper.GetEntriesAsync();
+    }
+
+    protected void OnCreateMigraineEntryCommand()
+    {
+        var occurrence = new DateTime(DateOfOccurrence.Value.Year, DateOfOccurrence.Value.Month, DateOfOccurrence.Value.Day, TimeOfOccurrence.Value.Hours, TimeOfOccurrence.Value.Minutes, 0);
+        var entry = new MigraineEntryDto(occurrence, Severity, Duration ?? 0, AdditionalInfo);
+
+        Entries.Add(entry);
+
+        StateHasChanged();
     }
 }

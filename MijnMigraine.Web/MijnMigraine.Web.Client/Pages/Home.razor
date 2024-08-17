@@ -16,15 +16,43 @@ else
   <MudTable Items="Entries" Hover="true" SortLabel="Sort By" Elevation="0" AllowUnsorted="false">
         <HeaderContent>
             <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<MigraineEntryDto, object>(x=>x.DateOfOccurrence)">Date</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.Severity)">Severity</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.Duration)">Duration</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.Severity)">Severity</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.AdditionalInfo!)">Info</MudTableSortLabel></MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Date">@context.DateOfOccurrence</MudTd>
-            <MudTd DataLabel="Severity">@context.Severity</MudTd>
-            <MudTd DataLabel="Duration">@context.Duration</MudTd>
+            <MudTd DataLabel="Date">@(context.DateOfOccurrence.ToString("d MMMM yyy @ HH:mm"))</MudTd>
+            <MudTd DataLabel="Duration">@(context.Duration.ToString("f1")) h</MudTd>
+            <MudTd DataLabel="Severity">@(context.Severity)/10</MudTd>
             <MudTd DataLabel="Info">@context.AdditionalInfo</MudTd>
         </RowTemplate>
     </MudTable>
 }
+
+<br />
+<br />
+<MudText Class="mb-8">Use the following form to add an entry.</MudText>
+
+<MudGrid>
+    <MudItem xs="12">
+        <MudCard Outlined>
+            <MudPaper Class="pa-4" Elevation="0">
+                <MudForm>
+                    <MudDatePicker Label="Date of occurrence" @bind-Date="DateOfOccurrence" />
+                    <MudTimePicker Label="Time of occurrence" AmPm="false" @bind-Time="TimeOfOccurrence" />
+                    <MudNumericField @bind-Value="@Duration" Step=".5M" Label="Duration (h)" Required="true" RequiredError="Duration is required!" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AccessTime" />
+                    <br />
+                    <br />
+                    <MudRating @bind-SelectedValue="@Severity" MaxValue="10" />
+                    <MudTextField @bind-Value="@AdditionalInfo" AutoGrow Label="Additional info" />
+                    <br />
+                    <br />
+                    <div class="d-flex align-center justify-space-between">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto"
+                                   OnClick="OnCreateMigraineEntryCommand">Create</MudButton>
+                    </div>
+                </MudForm>
+            </MudPaper>
+        </MudCard>
+    </MudItem>
+</MudGrid>
