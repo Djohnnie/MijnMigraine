@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MijnMigraine.Web.Client.Contracts;
 using MijnMigraine.Web.Client.Helpers;
 using MijnMigraine.Web.Client.Pages;
 using MijnMigraine.Web.Components;
@@ -45,5 +46,11 @@ app.MapGet("/api/entries", async (ILogicHelper helper) =>
     return await helper.GetEntriesAsync();
 })
 .WithName("GetAllMigraineEntries");
+
+app.MapPost("/api/entries", async (ILogicHelper helper, MigraineEntryDto entry) =>
+{
+    return await helper.CreateEntry(entry);
+})
+.WithName("CreateMigraineEntry");
 
 app.Run();

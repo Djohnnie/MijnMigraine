@@ -2,32 +2,9 @@
 
 @page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Migraine Entries</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText>
-<MudText Class="mb-8">This component demonstrates fetching data from the server.</MudText>
-
-@if (Entries == null)
-{
-    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
-}
-else
-{
-  <MudTable Items="Entries" Hover="true" SortLabel="Sort By" Elevation="0" AllowUnsorted="false">
-        <HeaderContent>
-            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<MigraineEntryDto, object>(x=>x.DateOfOccurrence)">Date</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.Duration)">Duration</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.Severity)">Severity</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.AdditionalInfo!)">Info</MudTableSortLabel></MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Date">@(context.DateOfOccurrence.ToString("d MMMM yyy @ HH:mm"))</MudTd>
-            <MudTd DataLabel="Duration">@(context.Duration.ToString("f1")) h</MudTd>
-            <MudTd DataLabel="Severity">@(context.Severity)/10</MudTd>
-            <MudTd DataLabel="Info">@context.AdditionalInfo</MudTd>
-        </RowTemplate>
-    </MudTable>
-}
+<MudText Typo="Typo.h3" GutterBottom="true">Mijn Migraine</MudText>
 
 <br />
 <br />
@@ -56,3 +33,25 @@ else
         </MudCard>
     </MudItem>
 </MudGrid>
+
+@if (Entries == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+  <MudTable Items="Entries" Hover="true" SortLabel="Sort By" Elevation="0" AllowUnsorted="false">
+        <HeaderContent>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<MigraineEntryDto, object>(x=>x.DateOfOccurrence)">Date</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.Duration)">Duration</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.Severity)">Severity</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.AdditionalInfo!)">Info</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Date">@(context.DateOfOccurrence.ToString("d MMMM yyy @ HH:mm"))</MudTd>
+            <MudTd DataLabel="Duration">@(context.Duration.ToString("f1")) h</MudTd>
+            <MudTd DataLabel="Severity">@(context.Severity)/10</MudTd>
+            <MudTd DataLabel="Info">@context.AdditionalInfo</MudTd>
+        </RowTemplate>
+    </MudTable>
+}

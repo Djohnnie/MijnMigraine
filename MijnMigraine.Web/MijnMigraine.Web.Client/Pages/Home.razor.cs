@@ -26,12 +26,12 @@ public partial class Home : ComponentBase
         Entries = await _logicHelper.GetEntriesAsync();
     }
 
-    protected void OnCreateMigraineEntryCommand()
+    protected async void OnCreateMigraineEntryCommand()
     {
         var occurrence = new DateTime(DateOfOccurrence.Value.Year, DateOfOccurrence.Value.Month, DateOfOccurrence.Value.Day, TimeOfOccurrence.Value.Hours, TimeOfOccurrence.Value.Minutes, 0);
         var entry = new MigraineEntryDto(occurrence, Severity, Duration ?? 0, AdditionalInfo);
 
-        Entries.Add(entry);
+        Entries = await _logicHelper.CreateEntry(entry);
 
         StateHasChanged();
     }
