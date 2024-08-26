@@ -18,7 +18,7 @@ public class MijnMigraineDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // $env:CONNECTION_STRING='...'
-        optionsBuilder.UseSqlServer(_configuration.GetValue<string>("CONNECTION_STRING"));
+        optionsBuilder.UseSqlServer(_configuration.GetValue<string>("CONNECTIONSTRING"));
 
         base.OnConfiguring(optionsBuilder);
     }
