@@ -1,0 +1,49 @@
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - MijnMigraine.Web/*
+    - pipeline-web.yml
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  solution: '*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+
+- task: UseDotNet@2
+  displayName: 'Use .NET SDK (9.0)'
+  inputs:
+    packageType: sdk
+    version: 9.0.100
+    includePreviewVersions: true
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- task: DotNetCoreCLI@2
+  displayName: Restore NuGet packages
+  inputs:
+    command: 'restore'
+    projects: | 
+      **/MijnMigraine.Web.csproj
+
+- task: DotNetCoreCLI@2
+  displayName: Build Solution
+  inputs:
+    command: 'build'
+    projects: | 
+      **/MijnMigraine.Web.csproj
+
+- script: |
+    dotnet publish ./MijnMigraine.Web/MijnMigraine.Web --configuration "Release" --output ./MijnMigraine.Web/MijnMigraine.Web/bin/Release/publish
+
+- script: |
+    cd ./MijnMigraine.Web/MijnMigraine.Web
+    docker build -t djohnnie/mijnmigraine-web .
+    docker login -u '$(dockerId)' -p '$(dockerPwd)'
+    docker push djohnnie/mijnmigraine-web
