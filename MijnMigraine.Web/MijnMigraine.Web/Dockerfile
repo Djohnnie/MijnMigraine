@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0
+﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0-preview
 
 # Set the working directory
 WORKDIR /app
