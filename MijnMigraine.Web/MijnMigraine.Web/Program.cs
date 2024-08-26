@@ -1,10 +1,9 @@
-using Microsoft.EntityFrameworkCore;
 using MijnMigraine.Web.Client.Contracts;
 using MijnMigraine.Web.Client.Helpers;
-using MijnMigraine.Web.Client.Pages;
 using MijnMigraine.Web.Components;
 using MijnMigraine.Web.Data;
 using MudBlazor.Services;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
