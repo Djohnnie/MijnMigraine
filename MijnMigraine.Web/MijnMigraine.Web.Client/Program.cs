@@ -1,6 +1,11 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MijnMigraine.Web.Client.Helpers;
 using MudBlazor.Services;
+
+var culture = new CultureInfo("nl-BE");
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 

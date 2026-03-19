@@ -1,0 +1,75 @@
+@using MijnMigraine.Web.Client.Contracts
+
+<MudDialog>
+    <TitleContent>
+        <MudStack Row AlignItems="AlignItems.Center" Spacing="2">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Color="Color.Primary" />
+            <MudText Typo="Typo.h6">Nieuwe migraine-registratie</MudText>
+        </MudStack>
+    </TitleContent>
+    <DialogContent>
+        <MudForm @ref="_form" @bind-IsValid="_isValid">
+            <MudStack Spacing="3">
+                <MudDatePicker Label="Datum" @bind-Date="DateOfOccurrence"
+                               Required="true" RequiredError="Datum is verplicht"
+                               Variant="Variant.Outlined" Culture="@(new System.Globalization.CultureInfo("nl-BE"))" />
+                <MudTimePicker Label="Tijdstip" AmPm="false" @bind-Time="TimeOfOccurrence"
+                               Required="true" RequiredError="Tijdstip is verplicht"
+                               Variant="Variant.Outlined" />
+                <MudNumericField @bind-Value="@Duration" Step=".5M" Label="Duur (uren)"
+                                 Required="true" RequiredError="Duur is verplicht!"
+                                 Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccessTime"
+                                 Variant="Variant.Outlined" Min="0.5M"
+                                 Culture="@(new System.Globalization.CultureInfo("nl-BE"))" />
+                <div>
+                    <MudText Typo="Typo.body2" Class="mb-1" Color="Color.Default">Ernst</MudText>
+                    <MudRating @bind-SelectedValue="@Severity" MaxValue="10" Size="Size.Large"
+                               FullIcon="@Icons.Material.Filled.Circle"
+                               EmptyIcon="@Icons.Material.Outlined.Circle" />
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">@Severity / 10</MudText>
+                </div>
+                <MudTextField @bind-Value="@AdditionalInfo" AutoGrow Label="Extra opmerkingen"
+                              Lines="3" Variant="Variant.Outlined"
+                              Placeholder="Triggers, medicatie, symptomen..." />
+            </MudStack>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Variant="Variant.Text">Annuleren</MudButton>
+        <MudButton OnClick="Submit" Variant="Variant.Filled" Color="Color.Primary"
+                   Disabled="@(!_isValid || Severity == 0)">
+            <MudIcon Icon="@Icons.Material.Filled.Save" Class="mr-1" Size="Size.Small" />
+            Opslaan
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = null!;
+
+    private MudForm _form = null!;
+    private bool _isValid;
+
+    private DateTime? DateOfOccurrence { get; set; } = DateTime.Today;
+    private TimeSpan? TimeOfOccurrence { get; set; } = DateTime.Now.TimeOfDay;
+    private int Severity { get; set; } = 5;
+    private decimal? Duration { get; set; } = 1.0M;
+    private string? AdditionalInfo { get; set; }
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private async Task Submit()
+    {
+        await _form.Validate();
+        if (!_isValid || Severity == 0)
+            return;
+
+        var occurrence = new DateTime(
+            DateOfOccurrence!.Value.Year, DateOfOccurrence.Value.Month, DateOfOccurrence.Value.Day,
+            TimeOfOccurrence!.Value.Hours, TimeOfOccurrence.Value.Minutes, 0);
+
+        var entry = new MigraineEntryDto(occurrence, Severity, Duration ?? 0, AdditionalInfo);
+        MudDialog.Close(DialogResult.Ok(entry));
+    }
+}

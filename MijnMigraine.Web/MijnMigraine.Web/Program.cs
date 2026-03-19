@@ -1,9 +1,14 @@
+using System.Globalization;
 using MijnMigraine.Web.Client.Contracts;
 using MijnMigraine.Web.Client.Helpers;
 using MijnMigraine.Web.Components;
 using MijnMigraine.Web.Data;
 using MudBlazor.Services;
 using System.Net;
+
+var culture = new CultureInfo("nl-BE");
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
 
 var builder = WebApplication.CreateBuilder(args);
 

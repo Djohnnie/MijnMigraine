@@ -2,56 +2,180 @@
 
 @page "/"
 
-<PageTitle>Migraine Entries</PageTitle>
-
-<MudText Typo="Typo.h3" GutterBottom="true">Mijn Migraine</MudText>
-
-<br />
-<br />
-<MudText Class="mb-8">Use the following form to add an entry.</MudText>
-
-<MudGrid>
-    <MudItem xs="12">
-        <MudCard Outlined>
-            <MudPaper Class="pa-4" Elevation="0">
-                <MudForm>
-                    <MudDatePicker Label="Date of occurrence" @bind-Date="DateOfOccurrence" />
-                    <MudTimePicker Label="Time of occurrence" AmPm="false" @bind-Time="TimeOfOccurrence" />
-                    <MudNumericField @bind-Value="@Duration" Step=".5M" Label="Duration (h)" Required="true" RequiredError="Duration is required!" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AccessTime" />
-                    <br />
-                    <br />
-                    <MudRating @bind-SelectedValue="@Severity" MaxValue="10" />
-                    <MudTextField @bind-Value="@AdditionalInfo" AutoGrow Label="Additional info" />
-                    <br />
-                    <br />
-                    <div class="d-flex align-center justify-space-between">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto"
-                                   OnClick="OnCreateMigraineEntryCommand">Create</MudButton>
-                    </div>
-                </MudForm>
-            </MudPaper>
-        </MudCard>
-    </MudItem>
-</MudGrid>
+<PageTitle>Migraine-registraties</PageTitle>
 
 @if (Entries == null)
 {
-    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+    <div class="d-flex justify-center align-center" style="min-height: 60vh;">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+    </div>
 }
 else
 {
-  <MudTable Items="Entries" Hover="true" SortLabel="Sort By" Elevation="0" AllowUnsorted="false">
-        <HeaderContent>
-            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<MigraineEntryDto, object>(x=>x.DateOfOccurrence)">Date</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.Duration)">Duration</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.Severity)">Severity</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.AdditionalInfo!)">Info</MudTableSortLabel></MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Date">@(context.DateOfOccurrence.ToString("d MMMM yyy @ HH:mm"))</MudTd>
-            <MudTd DataLabel="Duration">@(context.Duration.ToString("f1")) h</MudTd>
-            <MudTd DataLabel="Severity">@(context.Severity)/10</MudTd>
-            <MudTd DataLabel="Info">@context.AdditionalInfo</MudTd>
-        </RowTemplate>
-    </MudTable>
+    <MudGrid Spacing="4" Class="mb-6">
+        <MudItem xs="12" sm="4">
+            <MudPaper Class="pa-4 rounded-lg" Elevation="0" Style="border: 1px solid var(--mud-palette-lines-default);">
+                <MudStack Row AlignItems="AlignItems.Center" Spacing="3">
+                    <MudAvatar Color="Color.Primary" Variant="Variant.Filled" Size="Size.Large" Rounded>
+                        <MudIcon Icon="@Icons.Material.Filled.EventNote" />
+                    </MudAvatar>
+                    <div>
+                        <MudText Typo="Typo.h4" Color="Color.Primary"><b>@Entries.Count</b></MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Totaal registraties</MudText>
+                    </div>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudPaper Class="pa-4 rounded-lg" Elevation="0" Style="border: 1px solid var(--mud-palette-lines-default);">
+                <MudStack Row AlignItems="AlignItems.Center" Spacing="3">
+                    <MudAvatar Color="Color.Warning" Variant="Variant.Filled" Size="Size.Large" Rounded>
+                        <MudIcon Icon="@Icons.Material.Filled.Speed" />
+                    </MudAvatar>
+                    <div>
+                        <MudText Typo="Typo.h4" Color="Color.Warning">
+                            <b>@(Entries.Any() ? (Entries.Average(e => e.Severity)).ToString("0.0") : "—")</b>
+                        </MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Gem. ernst</MudText>
+                    </div>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudPaper Class="pa-4 rounded-lg" Elevation="0" Style="border: 1px solid var(--mud-palette-lines-default);">
+                <MudStack Row AlignItems="AlignItems.Center" Spacing="3">
+                    <MudAvatar Color="Color.Info" Variant="Variant.Filled" Size="Size.Large" Rounded>
+                        <MudIcon Icon="@Icons.Material.Filled.Timer" />
+                    </MudAvatar>
+                    <div>
+                        <MudText Typo="Typo.h4" Color="Color.Info">
+                            <b>@(Entries.Any() ? (Entries.Average(e => e.Duration)).ToString("0.0") : "—")</b>
+                        </MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Gem. duur (u)</MudText>
+                    </div>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid Spacing="4" Class="mb-6">
+        <MudItem xs="12" sm="4">
+            <MudPaper Class="pa-4 rounded-lg" Elevation="0" Style="border: 1px solid var(--mud-palette-lines-default);">
+                <MudStack Row AlignItems="AlignItems.Center" Spacing="3">
+                    <MudAvatar Color="Color.Success" Variant="Variant.Filled" Size="Size.Large" Rounded>
+                        <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" />
+                    </MudAvatar>
+                    <div>
+                        <MudText Typo="Typo.h4" Color="Color.Success"><b>@AttacksThisYear</b></MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Dit jaar</MudText>
+                    </div>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudPaper Class="pa-4 rounded-lg" Elevation="0" Style="border: 1px solid var(--mud-palette-lines-default);">
+                <MudStack Row AlignItems="AlignItems.Center" Spacing="3">
+                    <MudAvatar Color="Color.Tertiary" Variant="Variant.Filled" Size="Size.Large" Rounded>
+                        <MudIcon Icon="@Icons.Material.Filled.Today" />
+                    </MudAvatar>
+                    <div>
+                        <MudText Typo="Typo.h4" Color="Color.Tertiary"><b>@AttacksThisMonth</b></MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Deze maand</MudText>
+                    </div>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudPaper Class="pa-4 rounded-lg" Elevation="0" Style="border: 1px solid var(--mud-palette-lines-default);">
+                <MudStack Row AlignItems="AlignItems.Center" Spacing="3">
+                    <MudAvatar Color="Color.Error" Variant="Variant.Filled" Size="Size.Large" Rounded>
+                        <MudIcon Icon="@Icons.Material.Filled.TrendingUp" />
+                    </MudAvatar>
+                    <div>
+                        <MudText Typo="Typo.h4" Color="Color.Error"><b>@AverageFrequencyValue</b></MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Gem. @AverageFrequencyPeriod</MudText>
+                    </div>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <MudPaper Class="rounded-lg" Elevation="0" Style="border: 1px solid var(--mud-palette-lines-default);">
+        <div class="d-flex align-center justify-space-between pa-4 flex-wrap gap-2">
+            <MudStack Row AlignItems="AlignItems.Center" Spacing="3">
+                <MudText Typo="Typo.h6">Geschiedenis</MudText>
+                <MudSelect T="int?" Value="SelectedYear" ValueChanged="OnYearFilterChanged"
+                           Label="Jaar" Variant="Variant.Outlined" Dense Clearable
+                           Style="min-width: 130px;" Class="mt-0">
+                    @foreach (var year in AvailableYears)
+                    {
+                        <MudSelectItem T="int?" Value="@year">@year</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudStack>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.Add"
+                       OnClick="OpenCreateDialog">
+                Nieuwe registratie
+            </MudButton>
+        </div>
+
+        @if (SelectedYear.HasValue)
+        {
+            <MudAlert Severity="MudBlazor.Severity.Info" Variant="Variant.Text" Dense Class="mx-4 mb-2" NoIcon>
+                <b>@FilteredEntries.Count</b> registratie@(FilteredEntries.Count == 1 ? "" : "s") in <b>@SelectedYear</b>
+            </MudAlert>
+        }
+
+        @if (!FilteredEntries.Any())
+        {
+            <div class="d-flex flex-column align-center justify-center pa-8">
+                <MudIcon Icon="@Icons.Material.Outlined.NoteAdd" Size="Size.Large" Color="Color.Secondary" />
+                <MudText Typo="Typo.h6" Color="Color.Secondary" Class="mt-4">Nog geen registraties</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    @(SelectedYear.HasValue ? $"Geen registraties gevonden in {SelectedYear}." : "Klik op \"Nieuwe registratie\" om je eerste migraine te noteren.")
+                </MudText>
+            </div>
+        }
+        else
+        {
+            <MudTable Items="FilteredEntries" Hover="true" SortLabel="Sorteer op" Elevation="0" AllowUnsorted="false"
+                      Breakpoint="Breakpoint.Sm" Dense="false" RowClass="cursor-default">
+                <HeaderContent>
+                    <MudTh Style="min-width: 200px;"><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<MigraineEntryDto, object>(x=>x.DateOfOccurrence)">Datum</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.Duration)">Duur</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.Severity)">Ernst</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortBy="new Func<MigraineEntryDto, object>(x=>x.AdditionalInfo!)">Opmerkingen</MudTableSortLabel></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Datum">
+                        @{
+                            var endTime = context.DateOfOccurrence.AddHours((double)context.Duration);
+                            var nextDay = endTime.Date > context.DateOfOccurrence.Date;
+                        }
+                        <MudStack Spacing="0">
+                            <MudText Typo="Typo.body2"><b>@(context.DateOfOccurrence.ToString("d MMMM yyyy", new System.Globalization.CultureInfo("nl-BE")))</b></MudText>
+                            <MudText Typo="Typo.caption" Color="Color.Secondary" Style="white-space: nowrap;">
+                                @(context.DateOfOccurrence.ToString("HH:mm")) – @(endTime.ToString("HH:mm"))@(nextDay ? " (+1)" : "")
+                            </MudText>
+                        </MudStack>
+                    </MudTd>
+                    <MudTd DataLabel="Duur">
+                        <MudChip T="string" Size="Size.Small" Color="Color.Info" Variant="Variant.Text">
+                            @(context.Duration.ToString("0,#"))u
+                        </MudChip>
+                    </MudTd>
+                    <MudTd DataLabel="Ernst">
+                        <MudChip T="string" Size="Size.Small" Variant="Variant.Text"
+                                 Color="@(context.Severity >= 7 ? Color.Error : context.Severity >= 4 ? Color.Warning : Color.Success)">
+                            @(context.Severity)/10
+                        </MudChip>
+                    </MudTd>
+                    <MudTd DataLabel="Opmerkingen">
+                        <MudText Typo="Typo.body2">@(string.IsNullOrWhiteSpace(context.AdditionalInfo) ? "—" : context.AdditionalInfo)</MudText>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        }
+    </MudPaper>
 }

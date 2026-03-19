@@ -5,13 +5,18 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 <MudLayout>
-    <MudAppBar Elevation="1">
-        <MudText Typo="Typo.h5" Class="ml-3">Mijn Migraine</MudText>
+    <MudAppBar Elevation="0" Style="border-bottom: 1px solid var(--mud-palette-lines-default); backdrop-filter: blur(12px);">
+        <MudIcon Icon="@Icons.Material.Filled.Bolt" Color="Color.Primary" Class="mr-2" />
+        <MudText Typo="Typo.h6" Class="ml-1" Style="font-weight: 700; letter-spacing: -0.5px;">
+            Mijn Migraine
+        </MudText>
         <MudSpacer />
-        <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" Edge="Edge.End" OnClick="@DarkModeToggle" />
+        <MudTooltip Text="@(_isDarkMode ? "Schakel naar lichte modus" : "Schakel naar donkere modus")">
+            <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" Edge="Edge.End" OnClick="@DarkModeToggle" />
+        </MudTooltip>
     </MudAppBar>
     <MudMainContent Class="mt-16 pa-4">
-        <MudContainer MaxWidth="MaxWidth.Medium">
+        <MudContainer MaxWidth="MaxWidth.Large">
             @Body
         </MudContainer>
     </MudMainContent>
@@ -19,8 +24,8 @@
 
 
 <div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
+    Er is een onverwachte fout opgetreden.
+    <a href="" class="reload">Herladen</a>
     <a class="dismiss">🗙</a>
 </div>
 
@@ -37,7 +42,14 @@
         {
             PaletteLight = _lightPalette,
             PaletteDark = _darkPalette,
-            LayoutProperties = new LayoutProperties()
+            LayoutProperties = new LayoutProperties(),
+            Typography = new Typography
+            {
+                Default = new DefaultTypography
+                {
+                    FontFamily = ["'Inter'", "Roboto", "Helvetica", "Arial", "sans-serif"]
+                }
+            }
         };
     }
 
@@ -49,45 +61,57 @@
     private readonly PaletteLight _lightPalette = new()
     {
         Black = "#110e2d",
-        AppbarText = "#424242",
-        AppbarBackground = "rgba(255,255,255,0.8)",
+        Primary = "#6C5CE7",
+        PrimaryDarken = "#5A4BD5",
+        PrimaryLighten = "#A29BFE",
+        Secondary = "#636e72",
+        AppbarText = "#2d3436",
+        AppbarBackground = "rgba(255,255,255,0.85)",
+        Background = "#f8f9fa",
+        Surface = "#ffffff",
         DrawerBackground = "#ffffff",
         GrayLight = "#e8e8e8",
         GrayLighter = "#f9f9f9",
+        LinesDefault = "#e2e8f0",
+        TableLines = "#e2e8f0",
+        Divider = "#e2e8f0",
     };
 
     private readonly PaletteDark _darkPalette = new()
     {
-        Primary = "#7e6fff",
-        Surface = "#1e1e2d",
-        Background = "#1a1a27",
-        BackgroundGray = "#151521",
-        AppbarText = "#92929f",
-        AppbarBackground = "rgba(26,26,39,0.8)",
+        Primary = "#A29BFE",
+        PrimaryDarken = "#6C5CE7",
+        PrimaryLighten = "#D4D0FF",
+        Secondary = "#a0aec0",
+        Surface = "#1e1e2e",
+        Background = "#141420",
+        BackgroundGray = "#12121c",
+        AppbarText = "#a0aec0",
+        AppbarBackground = "rgba(20,20,32,0.85)",
         DrawerBackground = "#1a1a27",
         ActionDefault = "#74718e",
         ActionDisabled = "#9999994d",
         ActionDisabledBackground = "#605f6d4d",
-        TextPrimary = "#b2b0bf",
-        TextSecondary = "#92929f",
+        TextPrimary = "#cdd6f4",
+        TextSecondary = "#a0aec0",
         TextDisabled = "#ffffff33",
-        DrawerIcon = "#92929f",
-        DrawerText = "#92929f",
+        DrawerIcon = "#a0aec0",
+        DrawerText = "#a0aec0",
         GrayLight = "#2a2833",
         GrayLighter = "#1e1e2d",
-        Info = "#4a86ff",
-        Success = "#3dcb6c",
-        Warning = "#ffb545",
-        Error = "#ff3f5f",
-        LinesDefault = "#33323e",
-        TableLines = "#33323e",
-        Divider = "#292838",
+        Info = "#74b9ff",
+        Success = "#55efc4",
+        Warning = "#ffeaa7",
+        Error = "#ff7675",
+        LinesDefault = "#2d2d44",
+        TableLines = "#2d2d44",
+        Divider = "#2d2d44",
         OverlayLight = "#1e1e2d80",
     };
 
     public string DarkLightModeButtonIcon => _isDarkMode switch
     {
-        true => Icons.Material.Rounded.AutoMode,
+        true => Icons.Material.Rounded.LightMode,
         false => Icons.Material.Outlined.DarkMode,
     };
 }
