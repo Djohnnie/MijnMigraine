@@ -1,0 +1,30 @@
+.analysis-markdown > :first-child {
+    margin-top: 0;
+}
+
+.analysis-markdown > :last-child {
+    margin-bottom: 0;
+}
+
+.analysis-markdown h1,
+.analysis-markdown h2,
+.analysis-markdown h3,
+.analysis-markdown h4 {
+    margin: 1rem 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.analysis-markdown p {
+    margin: 0 0 0.75rem;
+}
+
+.analysis-markdown ul,
+.analysis-markdown ol {
+    margin: 0 0 0.75rem 1.25rem;
+    padding-left: 1.25rem;
+}
+
+.analysis-markdown li + li {
+    margin-top: 0.35rem;
+}
